@@ -1,12 +1,12 @@
-import { Component, input, output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { LoginStatus } from '../data-access/login.service';
 import { Credentials } from '../../../shared/interfaces/credentials';
+import { LoginStatus } from '../data-access/login.service';
 
 @Component({
   standalone: true,
@@ -37,11 +37,17 @@ import { Credentials } from '../../../shared/interfaces/credentials';
         <mat-icon matPrefix>lock</mat-icon>
       </mat-form-field>
 
+      @if (loginStatus === 'error'){
+      <mat-error>Could not log you in with those details.</mat-error>
+      } @if(loginStatus === 'authenticating'){
+      <mat-spinner diameter="50"></mat-spinner>
+      }
+
       <button
         mat-raised-button
         color="accent"
         type="submit"
-        [disabled]="loginStatus() === 'authenticating'"
+        [disabled]="loginStatus === 'authenticating'"
       >
         Login
       </button>
@@ -78,8 +84,8 @@ import { Credentials } from '../../../shared/interfaces/credentials';
   ],
 })
 export class LoginFormComponent {
-  loginStatus = input.required<LoginStatus>();
-  login = output<Credentials>();
+  @Input({ required: true }) loginStatus!: LoginStatus;
+  @Output() login = new EventEmitter<Credentials>();
 
   private fb = inject(FormBuilder);
 

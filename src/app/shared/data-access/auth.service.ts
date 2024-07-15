@@ -9,8 +9,9 @@ import {
 } from 'firebase/auth';
 import { authState } from 'rxfire/auth';
 import { Credentials } from '../interfaces/credentials';
-import { connect } from 'ngxtension/connect';
 import { AUTH } from '../../app.config';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { connect } from 'ngxtension/connect';
 
 export type AuthUser = User | null | undefined;
 
