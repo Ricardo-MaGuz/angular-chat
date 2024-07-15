@@ -1,7 +1,6 @@
-
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -9,32 +8,118 @@
 // Be sure that you only ever include this mixin once!
 @include mat.core();
 
-// Define the theme object.
-$angular-chat-theme: mat.define-theme((
-  color: (
-    theme-type: light,
-    primary: mat.$azure-palette,
-    tertiary: mat.$blue-palette,
-  ),
-  density: (
-    scale: 0,
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$angularstart-chat-primary: mat.m2-define-palette(mat.$m2-orange-palette);
+$angularstart-chat-accent: mat.m2-define-palette(mat.$m2-blue-gray-palette,
+    700,
+    800,
+    900);
+
+// The warn palette is optional (defaults to red).
+$angularstart-chat-warn: mat.m2-define-palette(mat.$m2-red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$angularstart-chat-theme: mat.m2-define-light-theme((color: (primary: $angularstart-chat-primary,
+        accent: $angularstart-chat-accent,
+        warn: $angularstart-chat-warn,
+      ),
   )
-));
+);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
+@include mat.all-component-themes($angularstart-chat-theme);
+
+/* You can add global styles to this file, and also import other style files */
+$primary: mat.m2-get-color-from-palette($angularstart-chat-primary, default);
+$primary-lighter: mat.m2-get-color-from-palette($angularstart-chat-primary,
+    lighter);
+$primary-darker: mat.m2-get-color-from-palette($angularstart-chat-primary,
+    darker);
+
+$accent: mat.m2-get-color-from-palette($angularstart-chat-accent, A200);
+$accent-lighter: mat.m2-get-color-from-palette($angularstart-chat-accent,
+    lighter);
+$accent-darker: mat.m2-get-color-from-palette($angularstart-chat-accent,
+    darker);
 :root {
-  @include mat.all-component-themes($angular-chat-theme);
+  // theme
+    --primary-color: #{$primary};
+    --primary-lighter-color: #{$primary-lighter};
+    --primary-darker-color: #{$primary-darker};
+    --accent-color: #{$accent};
+    --accent-lighter-color: #{$accent-lighter};
+    --accent-darker-color: #{$accent-darker};
+  
+    // custom
+    --white: #ecf0f1;
+  }
+  
+  html,
+  body {
+    height: 100%;
+  }
+  
+  body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+  }
+  
+  .container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .gradient-bg {
+    background: linear-gradient(138deg,
+        var(--primary-darker-color) 0%,
+        var(--primary-color) 100%);
+  }
+  
+  .spacer {
+    flex: 1 1 auto;
+  }
+  
+  
+  @keyframes animateInPrimary {
+    0% {
+      transform: translate3d(-100%, 0, 0);
+    }
+  
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+  
+  @keyframes animateInSecondary {
+    0% {
+      opacity: 0;
+    }
+
+    50% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+    }
+
+.animate-in-primary {
+  animation: animateInPrimary;
+  animation: animateInPrimary;
+  animation-duration: 750ms;
 }
 
-// Comment out the line below if you want to use the pre-defined typography utility classes.
-// For more information: https://material.angular.io/guide/typography#using-typography-styles-in-your-application.
-// @include mat.typography-hierarchy($angular-chat-theme);
-
-// Comment out the line below if you want to use the deprecated `color` inputs.
-// @include mat.color-variants-backwards-compatibility($angular-chat-theme);
-/* You can add global styles to this file, and also import other style files */
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.animate-in-secondary {
+  animation: animateInSecondary ease-in 1;
+  animation: animateInSecondary ease-in 1;
+  animation-duration: 750ms;
+}
